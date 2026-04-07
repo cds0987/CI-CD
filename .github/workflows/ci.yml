@@ -2,14 +2,16 @@ name: CI - TravelBuddy
 
 on:
   push:
-    branches: [main]
+    branches: [main, Lab4]
   pull_request:
-    branches: [main]
+    branches: [main, Lab4]
 
 jobs:
   test:
     runs-on: ubuntu-latest
-
+    permissions:
+      contents: read
+      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -25,11 +27,11 @@ jobs:
       - name: Run tests
         env:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-        run: pytest test_api.py -v
+        run: pytest testapi.py -v
 
   docker-build:
     runs-on: ubuntu-latest
-    needs: test   # chỉ build nếu test pass
+    needs: test
 
     steps:
       - name: Checkout code

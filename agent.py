@@ -52,23 +52,3 @@ builder.add_conditional_edges("agent", tools_condition)
 builder.add_edge("tools", "agent")
  
 graph = builder.compile()
-
-
-# 6. Chạy Agent
-if __name__ == "__main__":
-    print("🌏 TravelBuddy Agent - Trợ lý du lịch thông minh")
-    print("=" * 50)
-    print("Gõ 'quit' để thoát\n")
- 
-    while True:
-        user_input = input("Bạn: ").strip()
-        if user_input.lower() in ["quit", "exit", "q"]:
-            print("Tạm biệt! Chúc bạn có chuyến đi vui vẻ 🛫")
-            break
-        if not user_input:
-            continue
- 
-        result = graph.invoke({"messages": [("user", user_input)]})
-        final_response = result["messages"][-1].content
-        print(f"\nTravelBuddy: {final_response}\n")
-        print("-" * 50)
