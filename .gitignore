@@ -1,0 +1,28 @@
+# Virtual environment
+venv/
+.venv/
+
+# Environment variables (chứa API key - KHÔNG được push lên git)
+.env
+.env.*
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Pytest cache
+.pytest_cache/
+*.egg-info/
+
+# IDE
+.vscode/
+.idea/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+*.log

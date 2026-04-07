@@ -1,0 +1,11 @@
+version: "3.9"
+
+services:
+  travelbuddy:
+    build: .
+    image: travelbuddy:latest
+    container_name: travelbuddy_agent
+    env_file:
+      - .env
+    stdin_open: true   # cho phép nhập input
+    tty: true          # giữ terminal
