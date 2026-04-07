@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Chạy agent
-CMD ["python", "agent.py"]
+CMD ["python", "testapi.py"]
