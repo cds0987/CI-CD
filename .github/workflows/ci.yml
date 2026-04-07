@@ -9,9 +9,6 @@ on:
 jobs:
   test:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      packages: write
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -29,16 +26,35 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
         run: pytest testapi.py -v
 
-  docker-build:
+  docker-build-and-push:
     runs-on: ubuntu-latest
-    needs: test
+    needs: test  # Chỉ chạy nếu test pass
+
+    permissions:
+      contents: read
+      packages: write  # Cần để push lên GHCR
 
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build Docker image
-        run: docker build -t travelbuddy:latest .
+      # Lowercase image name (GHCR yêu cầu)
+      - name: Set image name lowercase
+        run: echo "IMAGE_NAME=ghcr.io/${GITHUB_REPOSITORY,,}" >> $GITHUB_ENV
 
+      # Login vào GHCR
+      - name: Login to GHCR
+        run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
+
+      # Build image
+      - name: Build Docker image
+        run: docker build -t $IMAGE_NAME:latest .
+
+      # Verify image
       - name: Verify image
-        run: docker images travelbuddy
+        run: docker images
+
+      # Push lên GHCR (chỉ khi push vào main hoặc Lab4, không push khi PR)
+      - name: Push to GHCR
+        if: github.event_name == 'push'
+        run: docker push $IMAGE_NAME:latest
