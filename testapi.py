@@ -16,3 +16,6 @@ def test_travelbuddy_agent():
     # Kiểm tra response hợp lệ
     assert final_response is not None
     assert len(final_response) > 0
+
+if __name__ == "__main__":
+    test_travelbuddy_agent()
